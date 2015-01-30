@@ -212,6 +212,7 @@ module.exports = function(grunt) {
 
                     var filePath = (opts.baseDir ? opts.baseDir : path.dirname(filepath)) + '/';
                     var filename = path.normalize((filePath + reference).split('?')[0]);
+                    filename = filename.replace(/{{(?:[a-z]+|[#^].*?}}.*?{{\/[a-z]+)}}/gi, '');
                     var originalFilename = filename;
                     var originalReference = reference;
 
