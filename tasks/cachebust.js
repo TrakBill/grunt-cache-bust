@@ -212,7 +212,6 @@ module.exports = function(grunt) {
 
                     var filePath = (opts.baseDir ? opts.baseDir : path.dirname(filepath)) + '/';
                     var filename = path.normalize((filePath + reference).split('?')[0]);
-                    filename = filename.replace(/{{(?:[a-z]+|[#^].*?}}.*?{{\/[a-z]+)}}/gi, '');
                     var originalFilename = filename;
                     var originalReference = reference;
 
@@ -267,6 +266,14 @@ module.exports = function(grunt) {
                             grunt.file.copy(filename, newFilename);
                         }
                     } else {
+                        if (opts.replaceTerms && opts.replaceTerms.length > 0) {
+                            opts.replaceTerms.forEach(function(obj) {
+                                grunt.util._.each(obj, function(replacement, term) {
+                                    filename = filename.replace(term, replacement);
+                                });
+                            });
+                        }
+
                         newFilename = reference.split('?')[0] + '?';
                         newFilename += grunt.file.exists(filename) ? generateHash(grunt.file.read(filename)) : Math.floor(Date.now() / 1000);
 
