@@ -266,6 +266,11 @@ module.exports = function(grunt) {
 
                             // Create our new file
                             grunt.file.copy(filename, newFilename);
+                            
+                            // Delete the original files, if enabled
+                            if (opts.deleteOriginals) {
+                                grunt.file.delete(filename);
+                            }
                         }
                     } else {
                         if (opts.replaceTerms && opts.replaceTerms.length > 0) {
@@ -293,15 +298,6 @@ module.exports = function(grunt) {
                 grunt.log.writeln(['The file ', filepath, ' was busted!'].join(''));
             });
         });
-
-        // Delete the original files, if enabled
-        if (opts.rename && opts.deleteOriginals) {
-            for (var file in processedFileMap) {
-                if (grunt.file.exists(file)) {
-                    grunt.file.delete(file);
-                }
-            }
-        }
 
         // Generate a JSON with the swapped file names if requested
         if (opts.jsonOutput) {
