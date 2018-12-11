@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     var css = require('css');
 
     var remoteRegex = /http:|https:|\/\/|data:image/;
-    var extensionRegex = /(\.[a-zA-Z0-9]{2,4})(|\?.*)$/;
+    var extensionRegex = /(\.[a-zA-Z0-9]{2,})(|\?.*)$/;
     var urlFragHintRegex = /'(([^']+)#grunt-cache-bust)'|"(([^"]+)#grunt-cache-bust)"/g;
 
     var filenameSwaps = {};
