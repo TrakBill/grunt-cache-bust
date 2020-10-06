@@ -105,11 +105,16 @@ module.exports = function(grunt) {
                         var hasBackgroundUrl = (/background/).test(declaration.property) && (/url/).test(declaration.value),
                             hasContentUrl = (/content/).test(declaration.property) && (/url/).test(declaration.value),
                             hasSrcUrl = (/src/).test(declaration.property) && (/url/).test(declaration.value),
-                            dataImage = (/data\:image\//).test(declaration.value);
+                            dataImage = (/data\:image\//).test(declaration.value),
+                            urlRegex = (/url\(["|']?(.*?)['|"]?\)/g),
+                            urlMatch;
 
-                        // Check if it has a background property, and if so, check that it contains a URL
+                        // Check if it has a property whose value can include a URL, and if so, check that it contains a URL
                         if ((hasBackgroundUrl || hasContentUrl || hasSrcUrl) && !dataImage) {
-                            paths.push(declaration.value.match(/url\(["|']?(.*?)['|"]?\)/)[1]);
+                            // Since multiple URLs can appear in one declaration (especially prevalent with fonts), do a global match and collect all of them
+                            while ((urlMatch = urlRegex.exec(declaration.value)) !== null) {
+                                paths.push(urlMatch[1]);
+                            }
                         }
                     });
                 }
